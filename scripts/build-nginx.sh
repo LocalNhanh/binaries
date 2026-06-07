@@ -23,7 +23,10 @@ rm -rf "$WORK"; mkdir -p "$WORK"; cd "$WORK"
 log "downloading sources (nginx $NGINX_VER, pcre2 $PCRE2_VER, zlib $ZLIB_VER)"
 curl -fsSL -o nginx.tar.gz "https://nginx.org/download/nginx-${NGINX_VER}.tar.gz"
 curl -fsSL -o pcre2.tar.gz "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${PCRE2_VER}/pcre2-${PCRE2_VER}.tar.gz"
-curl -fsSL -o zlib.tar.gz  "https://zlib.net/zlib-${ZLIB_VER}.tar.gz"
+# zlib.net only keeps the latest release at the top-level path (older versions
+# 404), so prefer the version-stable GitHub release, then the fossils archive.
+curl -fsSL -o zlib.tar.gz "https://github.com/madler/zlib/releases/download/v${ZLIB_VER}/zlib-${ZLIB_VER}.tar.gz" \
+  || curl -fsSL -o zlib.tar.gz "https://www.zlib.net/fossils/zlib-${ZLIB_VER}.tar.gz"
 for f in nginx pcre2 zlib; do tar -xzf "$f.tar.gz"; done
 
 # OpenSSL: use system/Homebrew headers on macOS (cannot fully static libSystem);
