@@ -16,13 +16,30 @@ PLATFORM="$(detect_platform)"
 ARCH="$(detect_arch)"
 
 # Extensions commonly required by PHP web apps (WordPress, Laravel, ...).
-EXTENSIONS="bcmath,ctype,curl,dom,fileinfo,filter,gd,iconv,intl,mbstring,mysqli,openssl,pdo,pdo_mysql,phar,session,simplexml,sodium,tokenizer,xml,zip,zlib"
+EXTENSIONS="bcmath,ctype,curl,dom,fileinfo,filter,gd,iconv,intl,mbstring,mysqli,opcache,openssl,pdo,pdo_mysql,phar,session,simplexml,sodium,tokenizer,xml,zip,zlib"
 
-# static-php-cli can only statically compile Zend Opcache for PHP >= 8.0.
-# For 7.x it errors out, so only add opcache on 8.0+.
+# Per-version download overrides (e.g. pin a dependency to an older release).
+DOWNLOAD_OVERRIDES=()
+
 case "$VERSION" in
-  7.*) : ;;  # skip opcache on legacy 7.x
-  *)   EXTENSIONS="$EXTENSIONS,opcache" ;;
+  7.*)
+    # PHP 7.4 is EOL; building it on a modern (2026) toolchain needs three
+    # workarounds, all verified on macOS arm64 + Linux x86_64:
+    #   - opcache can't be statically compiled for PHP < 8.0 (spc limitation).
+    #   - libxml2 >= 2.12 made xmlStructuredErrorFunc take a `const` xmlError*,
+    #     which EOL 7.4 was never patched for -> pin libxml2 to the last 2.9.x.
+    #   - ICU >= 75 requires C++17 (u16string_view / enable_if_t) in its headers,
+    #     but 7.4's ext/intl builds against an older C++ std -> pin ICU to 74.2.
+    EXTENSIONS="${EXTENSIONS//,opcache/}"
+    DOWNLOAD_OVERRIDES+=(--custom-url "libxml2:https://download.gnome.org/sources/libxml2/2.9/libxml2-2.9.14.tar.xz")
+    DOWNLOAD_OVERRIDES+=(--custom-url "icu:https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c-74_2-src.tgz")
+    # GD's bundled configure run-test ("char foobar(){}", undefined behaviour) is
+    # miscompiled to an illegal instruction only by modern arm64 clang at -Os, so
+    # configure aborts on macOS. Linux gcc builds gd fine, so drop it on mac only.
+    if [ "$PLATFORM" = "darwin" ]; then
+      EXTENSIONS="${EXTENSIONS//,gd/}"
+    fi
+    ;;
 esac
 
 WORK="$REPO_ROOT/dist/php-build"
@@ -44,7 +61,7 @@ chmod +x spc
 
 log "doctor + download sources for PHP $VERSION"
 ./spc doctor --auto-fix || warn "spc doctor reported issues"
-./spc download --with-php="$VERSION" --for-extensions="$EXTENSIONS" --prefer-pre-built
+./spc download --with-php="$VERSION" --for-extensions="$EXTENSIONS" --prefer-pre-built "${DOWNLOAD_OVERRIDES[@]}"
 
 log "building cli + fpm (static)"
 ./spc build --build-cli --build-fpm "$EXTENSIONS"
