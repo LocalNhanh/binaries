@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-06-07T10:51:54.295Z",
+  "updated_at": "2026-06-07T13:50:16.054Z",
   "runtimes": {
     "php": {
       "versions": [
@@ -41,6 +41,26 @@
               "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.4/php-8.4-linux-x86_64.tar.gz",
               "sha256": "c058709d2586b1cc77ee56fe1a895b9430f5c3d35a18af976337f6983fc1387c",
               "size_bytes": 46268912
+            }
+          }
+        },
+        {
+          "version": "7.4",
+          "platforms": {
+            "darwin-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-7.4/php-7.4-darwin-arm64.tar.gz",
+              "sha256": "8d7bb4e5c4ca7624baa88b1dcbdc4a852192f883721a4c098047c168d1b88e92",
+              "size_bytes": 42893604
+            },
+            "linux-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-7.4/php-7.4-linux-arm64.tar.gz",
+              "sha256": "a81e965b3b4b87e266a1741bcce8abb413b2fffa260108bdc08a47e71213d5d4",
+              "size_bytes": 42994137
+            },
+            "linux-x86_64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-7.4/php-7.4-linux-x86_64.tar.gz",
+              "sha256": "4ff80703d0de9505c806f7be9b85f47b03ceda57f4d7a21fac2c8e922262aa74",
+              "size_bytes": 42453201
             }
           }
         }
