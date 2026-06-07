@@ -20,10 +20,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { runner: macos-14, platform: darwin-arm64 }
-          # - { runner: macos-13,       platform: darwin-x86_64 }
-          # - { runner: ubuntu-24.04,   platform: linux-x86_64 }
-          # - { runner: ubuntu-24.04-arm, platform: linux-arm64 }
+          - { runner: macos-14,         platform: darwin-arm64 }
+          - { runner: macos-13,         platform: darwin-x86_64 }
+          - { runner: ubuntu-24.04,     platform: linux-x86_64 }
+          - { runner: ubuntu-24.04-arm, platform: linux-arm64 }
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
