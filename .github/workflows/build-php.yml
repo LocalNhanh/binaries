@@ -1,0 +1,60 @@
+name: Build PHP
+
+# Builds portable php-fpm + php CLI via static-php-cli and publishes a
+# GitHub Release asset per (version, platform). v1 targets darwin-arm64;
+# add more entries to the matrix to expand platform coverage.
+
+on:
+  workflow_dispatch:
+    inputs:
+      versions:
+        description: 'Space-separated PHP versions (e.g. "8.4 8.3"). Empty = manifest.'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { runner: macos-14, platform: darwin-arm64 }
+          # - { runner: macos-13,       platform: darwin-x86_64 }
+          # - { runner: ubuntu-24.04,   platform: linux-x86_64 }
+          # - { runner: ubuntu-24.04-arm, platform: linux-arm64 }
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve versions
+        id: vers
+        run: |
+          if [ -n "${{ github.event.inputs.versions }}" ]; then
+            echo "list=${{ github.event.inputs.versions }}" >> "$GITHUB_OUTPUT"
+          else
+            list=$(node -e 'console.log(require("./manifests/versions.json").php.join(" "))')
+            echo "list=$list" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build + publish each version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x scripts/*.sh
+          for v in ${{ steps.vers.outputs.list }}; do
+            echo "::group::PHP $v (${{ matrix.platform }})"
+            ./scripts/build-php.sh "$v"
+            ./scripts/publish.sh php "$v"
+            echo "::endgroup::"
+          done
+
+      - name: Upload build artifacts (debug)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: php-${{ matrix.platform }}
+          path: dist/out/*
+          retention-days: 5

@@ -1,0 +1,72 @@
+name: Mirror databases
+
+# Re-mirrors official MySQL & MariaDB tarballs into the app's portable layout
+# and publishes them as GitHub Release assets.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mysql_versions:
+        description: 'Space-separated MySQL versions. Empty = manifest.'
+        required: false
+        default: ''
+      mariadb_versions:
+        description: 'Space-separated MariaDB versions. Empty = manifest.'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  mirror:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { runner: macos-14, platform: darwin-arm64 }
+          # - { runner: macos-13,       platform: darwin-x86_64 }
+          # - { runner: ubuntu-24.04,   platform: linux-x86_64 }
+          # - { runner: ubuntu-24.04-arm, platform: linux-arm64 }
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve versions
+        id: vers
+        run: |
+          mysql='${{ github.event.inputs.mysql_versions }}'
+          maria='${{ github.event.inputs.mariadb_versions }}'
+          [ -n "$mysql" ] || mysql=$(node -e 'console.log(require("./manifests/versions.json").mysql.join(" "))')
+          [ -n "$maria" ] || maria=$(node -e 'console.log(require("./manifests/versions.json").mariadb.join(" "))')
+          echo "mysql=$mysql" >> "$GITHUB_OUTPUT"
+          echo "maria=$maria" >> "$GITHUB_OUTPUT"
+
+      - name: Mirror MySQL
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x scripts/*.sh
+          for v in ${{ steps.vers.outputs.mysql }}; do
+            echo "::group::MySQL $v (${{ matrix.platform }})"
+            ./scripts/mirror-mysql.sh "$v" && ./scripts/publish.sh mysql "$v" || echo "::warning::MySQL $v failed on ${{ matrix.platform }}"
+            echo "::endgroup::"
+          done
+
+      - name: Mirror MariaDB
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for v in ${{ steps.vers.outputs.maria }}; do
+            echo "::group::MariaDB $v (${{ matrix.platform }})"
+            ./scripts/mirror-mariadb.sh "$v" && ./scripts/publish.sh mariadb "$v" || echo "::warning::MariaDB $v failed on ${{ matrix.platform }} (macOS arm64 tarball may be unavailable)"
+            echo "::endgroup::"
+          done
+
+      - name: Upload artifacts (debug)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-${{ matrix.platform }}
+          path: dist/out/*
+          retention-days: 5

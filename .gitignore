@@ -1,0 +1,8 @@
+dist/
+*.tar.gz
+*.tar.xz
+*.tgz
+*.zip
+*.sha256
+.DS_Store
+node_modules/

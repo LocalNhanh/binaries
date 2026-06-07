@@ -1,0 +1,7 @@
+{
+  "_comment": "Versions to build/mirror per service. CI reads this to drive matrices. v1 scope: core PHP stack.",
+  "php": ["8.4", "8.3", "8.2", "8.1"],
+  "nginx": ["1.27.4"],
+  "mysql": ["8.0.40"],
+  "mariadb": ["11.4.4"]
+}
