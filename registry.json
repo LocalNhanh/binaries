@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-06-07T10:31:22.242Z",
+  "runtimes": {
+    "php": {
+      "versions": [
+        {
+          "version": "8.4",
+          "platforms": {
+            "darwin-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.4/php-8.4-darwin-arm64.tar.gz",
+              "sha256": "77219db058532648069f99962955b8199ac3a43e2eb913f39fca714320116633",
+              "size_bytes": 47012571
+            },
+            "linux-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.4/php-8.4-linux-arm64.tar.gz",
+              "sha256": "d659ef7d322d30b7b0f3ee65e703bae4be46653cc830468d1a14a96ead0545ac",
+              "size_bytes": 46803315
+            },
+            "linux-x86_64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.4/php-8.4-linux-x86_64.tar.gz",
+              "sha256": "c058709d2586b1cc77ee56fe1a895b9430f5c3d35a18af976337f6983fc1387c",
+              "size_bytes": 46268912
+            }
+          }
+        }
+      ]
+    },
+    "nginx": {
+      "versions": [
+        {
+          "version": "1.27.4",
+          "platforms": {
+            "darwin-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/nginx-1.27.4/nginx-1.27.4-darwin-arm64.tar.gz",
+              "sha256": "3d033fb49beb1d5c62bdd8965df179c20968ba062d49148091b053ff0f3715e9",
+              "size_bytes": 547825
+            },
+            "linux-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/nginx-1.27.4/nginx-1.27.4-linux-arm64.tar.gz",
+              "sha256": "6157d02f42c81808dd2046356758547f281c77a56f6944f4308c9c129a339f19",
+              "size_bytes": 4615306
+            },
+            "linux-x86_64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/nginx-1.27.4/nginx-1.27.4-linux-x86_64.tar.gz",
+              "sha256": "7164ca5e662dbb21387e2ff27724d08c6e9585d89755bed2ae062f9121438b94",
+              "size_bytes": 4745594
+            }
+          }
+        }
+      ]
+    },
+    "mysql": {
+      "versions": [
+        {
+          "version": "8.0.40",
+          "platforms": {
+            "darwin-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/mysql-8.0.40/mysql-8.0.40-darwin-arm64.tar.gz",
+              "sha256": "11174a045a3f25dfa49a591ac5695fd89f9a599113978e737e87f60c39a425eb",
+              "size_bytes": 169810793
+            },
+            "linux-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/mysql-8.0.40/mysql-8.0.40-linux-arm64.tar.gz",
+              "sha256": "a6dca70152876afac10ea22b2ae556baa3328c162c9dff3a52472bd295c3d23f",
+              "size_bytes": 961718658
+            },
+            "linux-x86_64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/mysql-8.0.40/mysql-8.0.40-linux-x86_64.tar.gz",
+              "sha256": "4305ba5d529f44e7fe636f280cbae76b9dee61b8e3292390421547a567357fa7",
+              "size_bytes": 971429986
+            }
+          }
+        }
+      ]
+    },
+    "mariadb": {
+      "versions": [
+        {
+          "version": "11.4.4",
+          "platforms": {
+            "linux-x86_64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/mariadb-11.4.4/mariadb-11.4.4-linux-x86_64.tar.gz",
+              "sha256": "334c2f7aa452958bbcccb18f344862f10f8d299f2f7423bc3f37a681c90b1044",
+              "size_bytes": 321921497
+            }
+          }
+        }
+      ]
+    }
+  }
+}
