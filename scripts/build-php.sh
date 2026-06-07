@@ -56,7 +56,7 @@ case "$PLATFORM-$ARCH" in
 esac
 
 log "fetching static-php-cli ($SPC_BIN)"
-curl -fsSL -o spc "https://dl.static-php.dev/static-php-cli/spc-bin/nightly/$SPC_BIN"
+curl -fsSL --retry 5 --retry-delay 3 --retry-all-errors -o spc "https://dl.static-php.dev/static-php-cli/spc-bin/nightly/$SPC_BIN"
 chmod +x spc
 
 log "doctor + download sources for PHP $VERSION"
