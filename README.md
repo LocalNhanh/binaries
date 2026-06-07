@@ -58,7 +58,7 @@ Trigger workflows from the Actions tab (`workflow_dispatch`), or:
 
 ```bash
 gh workflow run build-php.yml   -f versions="8.4"
-gh workflow run build-nginx.yml -f versions="1.27.4"
+gh workflow run build-nginx.yml -f versions="1.30.2"
 gh workflow run mirror.yml      -f mysql_versions="8.0.40" -f mariadb_versions="11.4.4"
 gh workflow run update-registry.yml
 ```
@@ -67,6 +67,6 @@ gh workflow run update-registry.yml
 
 ```bash
 ./scripts/build-php.sh 8.4         # produces dist/out/php-8.4-<platform>-<arch>.tar.gz
-./scripts/build-nginx.sh 1.27.4
+./scripts/build-nginx.sh 1.30.2
 ./scripts/mirror-mysql.sh 8.0.40
 ```
