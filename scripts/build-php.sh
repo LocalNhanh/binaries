@@ -55,13 +55,29 @@ case "$PLATFORM-$ARCH" in
   *) die "unsupported platform for php build: $PLATFORM-$ARCH" ;;
 esac
 
+# On Linux, build a glibc-linked (dynamic-capable) binary instead of the
+# default musl fully-static one, so PHP can dlopen external zend_extensions
+# (e.g. the ionCube Loader) at runtime. Pin to glibc 2.17 (2012, CentOS 7+)
+# via spc's zig toolchain to stay portable across modern distros. macOS
+# binaries are already dynamic-capable (libSystem can't be linked statically),
+# so no override is needed there.
+if [ "$PLATFORM" = "linux" ]; then
+  case "$ARCH" in
+    arm64)  GNU_ARCH="aarch64" ;;
+    x86_64) GNU_ARCH="x86_64" ;;
+  esac
+  export SPC_LIBC="zig"
+  export SPC_TARGET="${GNU_ARCH}-linux-gnu.2.17"
+  log "linux dynamic-capable target: SPC_TARGET=$SPC_TARGET"
+fi
+
 log "fetching static-php-cli ($SPC_BIN)"
 curl -fsSL --retry 5 --retry-delay 3 --retry-all-errors -o spc "https://dl.static-php.dev/static-php-cli/spc-bin/nightly/$SPC_BIN"
 chmod +x spc
 
 log "doctor + download sources for PHP $VERSION"
 ./spc doctor --auto-fix || warn "spc doctor reported issues"
-./spc download --with-php="$VERSION" --for-extensions="$EXTENSIONS" --prefer-pre-built "${DOWNLOAD_OVERRIDES[@]}"
+./spc download --with-php="$VERSION" --for-extensions="$EXTENSIONS" --prefer-pre-built ${DOWNLOAD_OVERRIDES[@]+"${DOWNLOAD_OVERRIDES[@]}"}
 
 log "building cli + fpm (static)"
 ./spc build --build-cli --build-fpm "$EXTENSIONS"
@@ -76,5 +92,15 @@ chmod +x "$STAGE_DIR/bin/php" "$STAGE_DIR/sbin/php-fpm"
 
 smoke "$STAGE_DIR/bin/php" -v
 smoke "$STAGE_DIR/sbin/php-fpm" -v
+
+# The ionCube feature relies on PHP being able to load an external
+# zend_extension at runtime. A fully static binary cannot dlopen, so guard
+# against accidentally shipping one (Linux only; macOS is always dynamic).
+if [ "$PLATFORM" = "linux" ]; then
+  if ldd "$STAGE_DIR/bin/php" 2>&1 | grep -q "not a dynamic executable"; then
+    die "php binary is fully static; cannot load external zend_extension (ionCube)"
+  fi
+  log "php is dynamic-capable ($(ldd "$STAGE_DIR/bin/php" 2>/dev/null | grep -c '=>') shared libs)"
+fi
 
 "$SCRIPT_DIR/package.sh" php "$VERSION"
