@@ -42,6 +42,10 @@ jobs:
       - name: Build + publish each version
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # spc (static-php-cli) authenticates api.github.com calls for its
+          # pre-built deps via GITHUB_TOKEN; without it, shared macOS runner IPs
+          # hit the 60 req/h unauthenticated rate limit and fail with HTTP 403.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           chmod +x scripts/*.sh
           for v in ${{ steps.vers.outputs.list }}; do
