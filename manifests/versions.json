@@ -3,6 +3,6 @@
   "_note_mariadb": "MariaDB upstream only ships a Linux x86_64 generic tarball; linux-arm64/macOS are skipped (use MySQL there).",
   "php": ["8.5", "8.4", "8.3", "8.2", "8.1"],
   "nginx": ["1.30.2"],
-  "mysql": ["8.0.40"],
-  "mariadb": ["11.4.4"]
+  "mysql": ["8.4.3"],
+  "mariadb": ["12.3.2"]
 }
