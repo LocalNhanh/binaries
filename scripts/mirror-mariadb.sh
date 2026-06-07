@@ -18,42 +18,49 @@ ARCH="$(detect_arch)"
 # MariaDB REST API exposes per-release file lists with os/cpu metadata.
 API="https://downloads.mariadb.org/rest-api/mariadb/${VERSION}/"
 
-# Map our keys to MariaDB's os/cpu naming used in file_name.
+# Map our platform to the MariaDB REST API `os` field value.
 case "$PLATFORM" in
-  darwin) OS_MATCH="macos" ;;
-  linux)  OS_MATCH="linux-systemd" ;;
+  darwin) OS_MATCH="mac" ;;     # API uses "macOS"
+  linux)  OS_MATCH="linux" ;;   # API uses "Linux"
   *) die "unsupported platform: $PLATFORM" ;;
-esac
-case "$ARCH" in
-  arm64)  CPU_MATCH="$([ "$PLATFORM" = darwin ] && echo arm64 || echo aarch64)" ;;
-  x86_64) CPU_MATCH="x86_64" ;;
 esac
 
 WORK="$REPO_ROOT/dist/mariadb-mirror"
 rm -rf "$WORK"; mkdir -p "$WORK"; cd "$WORK"
 
-log "resolving MariaDB $VERSION ($OS_MATCH/$CPU_MATCH) via REST API"
+log "resolving MariaDB $VERSION ($OS_MATCH/$ARCH) via REST API"
 curl -fsSL -o api.json "$API" || die "MariaDB REST API failed: $API"
 
-# Pick the .tar.gz bintar matching os+cpu. Falls back gracefully if absent.
+# Schema: { release_data: { "<version>": { files: [ { os, cpu, package_type,
+# file_name, file_download_url } ] } } }. Pick the generic .tar.gz binary
+# tarball matching os + cpu (arm accepts both arm64/aarch64).
 URL="$(node -e '
   const fs=require("fs");
   const d=JSON.parse(fs.readFileSync("api.json","utf8"));
-  const os=process.argv[1], cpu=process.argv[2];
+  const osm=process.argv[1].toLowerCase(), arch=process.argv[2];
+  const archTokens = arch === "arm64" ? ["arm64","aarch64"] : ["x86_64","amd64"];
   let url="";
-  for (const rel of (d.releases?Object.values(d.releases):[])) {
+  const rd=d.release_data||{};
+  for (const rel of Object.values(rd)) {
     for (const f of (rel.files||[])) {
-      const n=(f.file_name||"").toLowerCase();
-      if (n.includes("bintar") && n.endsWith(".tar.gz") && n.includes(os) && n.includes(cpu)) {
+      const os=(f.os||"").toLowerCase();
+      const cpu=(f.cpu||"").toLowerCase();
+      const name=(f.file_name||"").toLowerCase();
+      const pkg=(f.package_type||"").toLowerCase();
+      if (os.includes(osm) && archTokens.some(t=>cpu.includes(t)) &&
+          pkg.includes("tar") && name.endsWith(".tar.gz")) {
         url=f.file_download_url||""; break;
       }
     }
     if (url) break;
   }
   process.stdout.write(url);
-' "$OS_MATCH" "$CPU_MATCH")"
+' "$OS_MATCH" "$ARCH")"
 
-[ -n "$URL" ] || die "no MariaDB tarball for $PLATFORM-$ARCH at $VERSION (may require source build on macOS)"
+if [ -z "$URL" ]; then
+  warn "MariaDB $VERSION has no generic tarball for $PLATFORM-$ARCH upstream — skipping"
+  exit 0
+fi
 
 log "downloading $URL"
 curl -fsSL -o archive.tar.gz "$URL"

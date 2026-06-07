@@ -1,5 +1,6 @@
 {
   "_comment": "Versions to build/mirror per service. CI reads this to drive matrices. v1 scope: core PHP stack.",
+  "_note_mariadb": "MariaDB upstream only ships a Linux x86_64 generic tarball; linux-arm64/macOS are skipped (use MySQL there).",
   "php": ["8.4", "8.3", "8.2", "8.1"],
   "nginx": ["1.27.4"],
   "mysql": ["8.0.40"],
