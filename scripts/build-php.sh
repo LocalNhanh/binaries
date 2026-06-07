@@ -16,7 +16,14 @@ PLATFORM="$(detect_platform)"
 ARCH="$(detect_arch)"
 
 # Extensions commonly required by PHP web apps (WordPress, Laravel, ...).
-EXTENSIONS="bcmath,ctype,curl,dom,fileinfo,filter,gd,iconv,intl,mbstring,mysqli,opcache,openssl,pdo,pdo_mysql,phar,session,simplexml,sodium,tokenizer,xml,zip,zlib"
+EXTENSIONS="bcmath,ctype,curl,dom,fileinfo,filter,gd,iconv,intl,mbstring,mysqli,openssl,pdo,pdo_mysql,phar,session,simplexml,sodium,tokenizer,xml,zip,zlib"
+
+# static-php-cli can only statically compile Zend Opcache for PHP >= 8.0.
+# For 7.x it errors out, so only add opcache on 8.0+.
+case "$VERSION" in
+  7.*) : ;;  # skip opcache on legacy 7.x
+  *)   EXTENSIONS="$EXTENSIONS,opcache" ;;
+esac
 
 WORK="$REPO_ROOT/dist/php-build"
 rm -rf "$WORK"; mkdir -p "$WORK"
