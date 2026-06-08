@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-06-07T13:50:16.054Z",
+  "updated_at": "2026-06-08T09:49:29.522Z",
   "runtimes": {
     "php": {
       "versions": [
@@ -9,18 +9,18 @@
           "platforms": {
             "darwin-arm64": {
               "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.5/php-8.5-darwin-arm64.tar.gz",
-              "sha256": "3aae16ccd43b02ae779294761170d3b89cbf3f0b8ffbf5994612f3d998acfd1a",
-              "size_bytes": 47826780
+              "sha256": "193105393cff664db770dda0312c9d0bdbd4a711295f6ac15be130da491558cb",
+              "size_bytes": 47794750
             },
             "linux-arm64": {
               "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.5/php-8.5-linux-arm64.tar.gz",
-              "sha256": "2a8d521bf750d4d4044d7d1595ec13dc53a3856af4c6932bb5fa9a65c30ed47b",
-              "size_bytes": 47471209
+              "sha256": "f0c16f16cd8e053f06eceb48cbf3173485355365db727e035aa351d5bde194c4",
+              "size_bytes": 48538638
             },
             "linux-x86_64": {
               "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.5/php-8.5-linux-x86_64.tar.gz",
-              "sha256": "e33b2595fa8b14c7a93ea5da55f1d781eaf02a255f7da0c002f480c08e601ad5",
-              "size_bytes": 46937457
+              "sha256": "c5975d4f7baafd69fa72a01ac6db440d5cafe53b1e04eb45daf1fd5ae43bee51",
+              "size_bytes": 48609327
             }
           }
         },
@@ -29,18 +29,78 @@
           "platforms": {
             "darwin-arm64": {
               "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.4/php-8.4-darwin-arm64.tar.gz",
-              "sha256": "77219db058532648069f99962955b8199ac3a43e2eb913f39fca714320116633",
-              "size_bytes": 47012571
+              "sha256": "3439ea5205dffe228738ece279214ee4e23559aeb8b7f487eb10d528b9692253",
+              "size_bytes": 46988177
             },
             "linux-arm64": {
               "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.4/php-8.4-linux-arm64.tar.gz",
-              "sha256": "d659ef7d322d30b7b0f3ee65e703bae4be46653cc830468d1a14a96ead0545ac",
-              "size_bytes": 46803315
+              "sha256": "2dcea976817301412a9beab631586b07cd83f34872b7f1d4ceef614a3473a872",
+              "size_bytes": 47476429
             },
             "linux-x86_64": {
               "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.4/php-8.4-linux-x86_64.tar.gz",
-              "sha256": "c058709d2586b1cc77ee56fe1a895b9430f5c3d35a18af976337f6983fc1387c",
-              "size_bytes": 46268912
+              "sha256": "1e3787c0b4c7aed4d26b15a187b60ec09d024b99d471fc79030ba91786ac6263",
+              "size_bytes": 47508679
+            }
+          }
+        },
+        {
+          "version": "8.3",
+          "platforms": {
+            "darwin-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.3/php-8.3-darwin-arm64.tar.gz",
+              "sha256": "e10fee02212be70c3fc25a8882cd9610baab28394daf674c78370b4d3941e9a6",
+              "size_bytes": 45780870
+            },
+            "linux-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.3/php-8.3-linux-arm64.tar.gz",
+              "sha256": "e32fe586ff694585cd69b2547e2105ef760d2eb761c4a04be93a5e03c2a61902",
+              "size_bytes": 46201067
+            },
+            "linux-x86_64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.3/php-8.3-linux-x86_64.tar.gz",
+              "sha256": "51d08d1674afa957a7aa8c5a375349b4c1308542b8c991be3605922181d1ea3c",
+              "size_bytes": 45762231
+            }
+          }
+        },
+        {
+          "version": "8.2",
+          "platforms": {
+            "darwin-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.2/php-8.2-darwin-arm64.tar.gz",
+              "sha256": "458b73708c51df03b639bbfecb0dae31716b4ac99d393357db237d270aa2086c",
+              "size_bytes": 45574684
+            },
+            "linux-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.2/php-8.2-linux-arm64.tar.gz",
+              "sha256": "5a2b85bed2d037779c85b1233b125da548299c87345466def1a9f68431149041",
+              "size_bytes": 46014947
+            },
+            "linux-x86_64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.2/php-8.2-linux-x86_64.tar.gz",
+              "sha256": "62d1cc02b976b8fa2e5656a99d6a7cd36608ec1877c5c5ff9d4dd66239c10132",
+              "size_bytes": 45561496
+            }
+          }
+        },
+        {
+          "version": "8.1",
+          "platforms": {
+            "darwin-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.1/php-8.1-darwin-arm64.tar.gz",
+              "sha256": "66ac3163cc3b8344e74cf274c83e87640403f5dcd4b2bd266e8ae3eb9dcc2014",
+              "size_bytes": 45318432
+            },
+            "linux-arm64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.1/php-8.1-linux-arm64.tar.gz",
+              "sha256": "7b85162caee6fdfb404d7cff181204b0561252861b776eea39c7035fa39ee9c6",
+              "size_bytes": 45744814
+            },
+            "linux-x86_64": {
+              "url": "https://github.com/LocalNhanh/binaries/releases/download/php-8.1/php-8.1-linux-x86_64.tar.gz",
+              "sha256": "049f52671900c288f0704f7375968d4c9eaec2333757f1e5314177f479b94298",
+              "size_bytes": 45310513
             }
           }
         },
@@ -49,18 +109,18 @@
           "platforms": {
             "darwin-arm64": {
               "url": "https://github.com/LocalNhanh/binaries/releases/download/php-7.4/php-7.4-darwin-arm64.tar.gz",
-              "sha256": "8d7bb4e5c4ca7624baa88b1dcbdc4a852192f883721a4c098047c168d1b88e92",
-              "size_bytes": 42893604
+              "sha256": "e4382b149096708c7bfffaa1daa62d199e395da8689d152b991beec30851c320",
+              "size_bytes": 42887893
             },
             "linux-arm64": {
               "url": "https://github.com/LocalNhanh/binaries/releases/download/php-7.4/php-7.4-linux-arm64.tar.gz",
-              "sha256": "a81e965b3b4b87e266a1741bcce8abb413b2fffa260108bdc08a47e71213d5d4",
-              "size_bytes": 42994137
+              "sha256": "32a2a259fcbf7cc03eb96ba1a93e23b1e8671aafc84d5eab57cb487fdc689973",
+              "size_bytes": 43726964
             },
             "linux-x86_64": {
               "url": "https://github.com/LocalNhanh/binaries/releases/download/php-7.4/php-7.4-linux-x86_64.tar.gz",
-              "sha256": "4ff80703d0de9505c806f7be9b85f47b03ceda57f4d7a21fac2c8e922262aa74",
-              "size_bytes": 42453201
+              "sha256": "402d48b0d8d95ff123379a42e71112fa6ac3b6650653e1316ad80a47dce7e313",
+              "size_bytes": 43561132
             }
           }
         }
