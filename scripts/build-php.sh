@@ -77,7 +77,11 @@ chmod +x spc
 
 log "doctor + download sources for PHP $VERSION"
 ./spc doctor --auto-fix || warn "spc doctor reported issues"
-./spc download --with-php="$VERSION" --for-extensions="$EXTENSIONS" --prefer-pre-built ${DOWNLOAD_OVERRIDES[@]+"${DOWNLOAD_OVERRIDES[@]}"}
+# NOTE: we deliberately do NOT pass --prefer-pre-built. The spc pre-built
+# mirror (dl.static-php.dev) is flaky (recurring HTTP 504) and its artifacts
+# are musl-static, which mismatches our glibc-2.17 (zig) target on Linux.
+# Building deps from upstream source is slower but stable and ABI-correct.
+./spc download --with-php="$VERSION" --for-extensions="$EXTENSIONS" ${DOWNLOAD_OVERRIDES[@]+"${DOWNLOAD_OVERRIDES[@]}"}
 
 log "building cli + fpm (static)"
 ./spc build --build-cli --build-fpm "$EXTENSIONS"
